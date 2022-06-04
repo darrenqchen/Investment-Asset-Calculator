@@ -23,7 +23,7 @@ public class InvestmentAssetCalculator extends Application {
 
     private BorderPane mainLayout;
     private BorderPane msLayout;
-    private Label msLabel
+    private Label msLabel;
     private Slider msSlider;
     private Label msTickLabel;
     private BorderPane irLayout;
