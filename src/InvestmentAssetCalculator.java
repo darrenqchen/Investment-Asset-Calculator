@@ -1,11 +1,14 @@
 /*
 TODO:
-- Make the TextFields only take in numbers
+- Make the TextFields only take in numbers except for ror which is a double
 - Make all the numbers go only to 3 decimal places
+- Add a yearly option too
  */
 
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -89,12 +92,57 @@ public class InvestmentAssetCalculator extends Application {
 
         inputFields.getChildren().addAll(startingAmount, monthlyContribution, ror, yearsToGrow, calculateButton);
         mainLayout.setTop(inputFields);
+
+        startingAmountField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(
+                    ObservableValue<? extends String> observable,
+                    String oldValue, String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    startingAmountField.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+
+        monthlyContributionField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(
+                    ObservableValue<? extends String> observable,
+                    String oldValue, String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    monthlyContributionField.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+        rorField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(
+                    ObservableValue<? extends String> observable,
+                    String oldValue, String newValue) {
+                if (!newValue.matches("\\d*|\\d*\\.{1}\\d{0,3}")) {
+                    rorField.setText(newValue.replaceAll("[^\\d*]|[^\\d*\\.{1}\\d{0,3}]", ""));
+                }
+            }
+        });
+
         calculateButton.setOnAction((event) -> {
             lineChart.getData().clear();
-            XYChart.Series data = addToChart(Double.parseDouble(startingAmountField.getText()), Double.parseDouble(monthlyContributionField.getText()), Double.parseDouble(rorField.getText()), Integer.parseInt(yearsToGrowField.getText()));
+            XYChart.Series data = addToChart(Integer.parseInt(startingAmountField.getText()), Integer.parseInt(monthlyContributionField.getText()), Double.parseDouble(rorField.getText()), Integer.parseInt(yearsToGrowField.getText()));
             lineChart.getData().add(data);
                 }
         );
+
+        yearsToGrowField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(
+                    ObservableValue<? extends String> observable,
+                    String oldValue, String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    yearsToGrowField.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+
     }
 
     public static void main(String[] args) {
@@ -108,14 +156,14 @@ public class InvestmentAssetCalculator extends Application {
         window.show();
     }
 
-    private XYChart.Series addToChart(double startingAmount, double monthlyContribution, double ror, int yearsToGrow) {
+    private XYChart.Series addToChart(int startingAmount, int monthlyContribution, double ror, int yearsToGrow) {
         double num = 0;
         DecimalFormat df = new DecimalFormat("#.###");
         XYChart.Series data = new XYChart.Series<>();
         data.setName("Assets");
         for (int i = 0; i <= yearsToGrow; i += 1) {
             double rateOfReturn = (Double.parseDouble(rorField.getText()) / 100) + 1;
-            String temp = df.format((num + 12 * Integer.parseInt(monthlyContributionField.getText())) * rateOfReturn);
+            String temp = df.format((num + 12 * monthlyContribution) * rateOfReturn);
             double doubleTemp = Double.parseDouble(temp);
             data.getData().add(new XYChart.Data(i, doubleTemp));
             num = doubleTemp;
