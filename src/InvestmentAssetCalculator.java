@@ -1,7 +1,6 @@
 /*
 TODO:
-- Make the TextFields only take in numbers except for ror which is a double
-- Make all the numbers go only to 3 decimal places
+- Make the rorField switch to ___.0 if no number is put after the decimal
 - Add a yearly option too
  */
 
@@ -67,17 +66,17 @@ public class InvestmentAssetCalculator extends Application {
         this.inputFields = new HBox();
         // Starting Amount
         this.startingAmount = new VBox();
-        this.startingAmountLabel = new Label("Starting Amount:");
+        this.startingAmountLabel = new Label("Starting Amount ($):");
         this.startingAmountField = new TextField();
         startingAmount.getChildren().addAll(startingAmountLabel, startingAmountField);
         // Monthly Contribution
         this.monthlyContribution = new VBox();
-        this.monthlyContributionLabel = new Label("Monthly Contribution:");
+        this.monthlyContributionLabel = new Label("Monthly Contribution ($):");
         this.monthlyContributionField = new TextField();
         monthlyContribution.getChildren().addAll(monthlyContributionLabel, monthlyContributionField);
         // Rate of Return
         this.ror = new VBox();
-        this.rorLabel = new Label("Rate of Return:");
+        this.rorLabel = new Label("Rate of Return (%):");
         this.rorField = new TextField();
         ror.getChildren().addAll(rorLabel, rorField);
         // Years to Grow
@@ -87,7 +86,6 @@ public class InvestmentAssetCalculator extends Application {
         yearsToGrow.getChildren().addAll(yearsToGrowLabel, yearsToGrowField);
         // Calculate Button
         this.calculateButton = new Button("Calculate");
-
 
 
         inputFields.getChildren().addAll(startingAmount, monthlyContribution, ror, yearsToGrow, calculateButton);
@@ -119,16 +117,16 @@ public class InvestmentAssetCalculator extends Application {
             public void changed(
                     ObservableValue<? extends String> observable,
                     String oldValue, String newValue) {
-                if (!newValue.matches("\\d*|\\d*\\.{1}\\d{0,3}")) {
-                    rorField.setText(newValue.replaceAll("[^\\d*]|[^\\d*\\.{1}\\d{0,3}]", ""));
+                if (!newValue.matches("\\d*(\\.\\d{0,3})?")) {
+                    rorField.setText(oldValue);
                 }
             }
         });
 
         calculateButton.setOnAction((event) -> {
-            lineChart.getData().clear();
-            XYChart.Series data = addToChart(Integer.parseInt(startingAmountField.getText()), Integer.parseInt(monthlyContributionField.getText()), Double.parseDouble(rorField.getText()), Integer.parseInt(yearsToGrowField.getText()));
-            lineChart.getData().add(data);
+                    lineChart.getData().clear();
+                    XYChart.Series data = addToChart(Integer.parseInt(startingAmountField.getText()), Integer.parseInt(monthlyContributionField.getText()), removeDecimalLastDigit(rorField.getText()), Integer.parseInt(yearsToGrowField.getText()));
+                    lineChart.getData().add(data);
                 }
         );
 
@@ -170,6 +168,13 @@ public class InvestmentAssetCalculator extends Application {
         }
         return data;
 
+    }
+
+    private double removeDecimalLastDigit(String text) {
+        if (text.charAt(text.length() - 1) == '.') {
+            text = text.substring(0, text.length() - 1);
+        }
+        return Double.parseDouble(text);
     }
 
 }
