@@ -7,15 +7,9 @@ public class StartingAmount extends AInputField {
 
     /**
      * Creates a starting amount field.
-     *
-     * @param description the label of the field.
      */
-    public StartingAmount(String description) {
-        super(description);
-    }
-
-    @Override
-    public void activateField() {
+    public StartingAmount() {
+        super("Starting Amount:");
         input.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 input.setText(newValue.replaceAll("[^\\d]", ""));

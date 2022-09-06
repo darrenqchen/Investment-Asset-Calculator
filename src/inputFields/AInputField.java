@@ -7,7 +7,7 @@ import javafx.scene.layout.VBox;
 /**
  * Abstract class to represent an InputField.
  */
-public abstract class AInputField implements InputField {
+public abstract class AInputField {
     protected VBox inputGroup;
     protected Label description;
     protected TextField input;

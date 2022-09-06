@@ -6,15 +6,9 @@ package inputFields;
 public class MonthlyContribution extends AInputField {
     /**
      * Creates a monthly contribution field.
-     *
-     * @param description the label of the field.
      */
-    public MonthlyContribution(String description) {
-        super(description);
-    }
-
-    @Override
-    public void activateField() {
+    public MonthlyContribution() {
+        super("Monthly Contribution:");
         input.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 input.setText(newValue.replaceAll("[^\\d]", ""));

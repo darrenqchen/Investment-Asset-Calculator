@@ -36,7 +36,7 @@ public class InvestmentAssetCalculator extends Application {
     private NumberAxis yAxis;
     private LineChart<Number, Number> lineChart;
     // Input Fields
-    private HBox inputFields;
+//    private HBox inputFields;
     // Starting Amount
 //    private VBox startingAmount;
 //    private Label startingAmountLabel;
@@ -54,7 +54,7 @@ public class InvestmentAssetCalculator extends Application {
 //    private Label yearsToGrowLabel;
 //    private TextField yearsToGrowField;
     // Calculate Button
-    private Button calculateButton;
+//    private Button calculateButton;
 
     public void init() {
         this.mainLayout = new BorderPane();
@@ -68,8 +68,8 @@ public class InvestmentAssetCalculator extends Application {
         this.lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setTitle("Savings Calculator");
         mainLayout.setCenter(lineChart);
-        // Input Fields
-        this.inputFields = new HBox();
+//        // Input Fields
+//        this.inputFields = new HBox();
 //        // Starting Amount
 //        this.startingAmount = new VBox();
 //        this.startingAmountLabel = new Label("Starting Amount:");
@@ -90,14 +90,13 @@ public class InvestmentAssetCalculator extends Application {
 //        this.yearsToGrowLabel = new Label("Years to Grow:");
 //        this.yearsToGrowField = new TextField();
 //        yearsToGrow.getChildren().addAll(yearsToGrowLabel, yearsToGrowField);
-        // Calculate Button
-        this.calculateButton = new Button("Calculate");
-
-
-        inputFields.getChildren().addAll(startingAmount, monthlyContribution, ror, yearsToGrow, calculateButton);
-        inputFields.setAlignment(Pos.BOTTOM_CENTER);
-        inputFields.setSpacing(10);
-        inputFields.setPadding(new Insets(0, 10, 0, 10));
+//        //Calculate Button
+//        this.calculateButton = new Button("Calculate");
+//
+//        inputFields.getChildren().addAll(startingAmount, monthlyContribution, ror, yearsToGrow, calculateButton);
+//        inputFields.setAlignment(Pos.BOTTOM_CENTER);
+//        inputFields.setSpacing(10);
+//        inputFields.setPadding(new Insets(0, 10, 0, 10));
         mainLayout.setTop(inputFields);
 //
 //        startingAmountField.textProperty().addListener(new ChangeListener<String>() {
@@ -145,10 +144,11 @@ public class InvestmentAssetCalculator extends Application {
 //
         calculateButton.setOnAction((event) -> {
                     int ytg = Integer.parseInt(yearsToGrowField.getText());
-//                    xAxis = new NumberAxis(0, ytg, 1);
-//                    yAxis = yAxis;
-//                    lineChart = new LineChart<>(xAxis, yAxis);
-//                    lineChart.getData().clear();
+                    // CHECK WHY I COMMENTED THE NEXT 4 LINES OUT
+                    xAxis = new NumberAxis(0, ytg, 1);
+                    yAxis = yAxis;
+                    lineChart = new LineChart<>(xAxis, yAxis);
+                    lineChart.getData().clear();
                     XYChart.Series data = addToChart(Integer.parseInt(startingAmountField.getText()), Integer.parseInt(monthlyContributionField.getText()), removeDecimalLastDigit(rorField.getText()), ytg);
                     lineChart.getData().add(data);
                 }

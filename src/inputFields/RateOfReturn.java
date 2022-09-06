@@ -6,20 +6,13 @@ package inputFields;
 public class RateOfReturn extends AInputField {
     /**
      * Creates a rate of return field.
-     *
-     * @param description the label of the field.
      */
-    public RateOfReturn(String description) {
-        super(description);
-    }
-
-    @Override
-    public void activateField() {
+    public RateOfReturn() {
+        super("Rate of Return:");
         input.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*(\\.\\d{0,3})?")) {
                 input.setText(oldValue);
             }
         });
-
     }
 }

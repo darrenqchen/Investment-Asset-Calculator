@@ -6,15 +6,9 @@ package inputFields;
 public class YearsToGrow extends AInputField {
     /**
      * Creates a years to grow field.
-     *
-     * @param description the label of the field.
      */
-    public YearsToGrow(String description) {
-        super(description);
-    }
-
-    @Override
-    public void activateField() {
+    public YearsToGrow() {
+        super("Years to Grow:");
         input.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 input.setText(newValue.replaceAll("[^\\d]", ""));
