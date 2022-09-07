@@ -1,4 +1,4 @@
-package inputFields;
+package personal.investmentCalculator.inputFields;
 
 /**
  * Represents the rate of return every year.

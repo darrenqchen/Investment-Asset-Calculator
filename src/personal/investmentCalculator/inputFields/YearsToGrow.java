@@ -1,4 +1,4 @@
-package inputFields;
+package personal.investmentCalculator.inputFields;
 
 /**
  * Represents how long you want the investment to grow.

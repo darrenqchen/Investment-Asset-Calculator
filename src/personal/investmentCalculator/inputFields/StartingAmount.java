@@ -1,4 +1,4 @@
-package inputFields;
+package personal.investmentCalculator.inputFields;
 
 /**
  * Represents the starting amount you put in.
