@@ -2,8 +2,9 @@ package personal.investmentCalculator;
 /*
 TODO:
 - Make the graph show the x and y data point if you hover over the point
-- Add the different balances (end balance, invested balance, interest accrued)
 - Add a table
+- Make x-axis go by 1
+// Need to fix Total Interest Amount function and data
  */
 
 
@@ -43,11 +44,7 @@ public class InvestmentAssetCalculator extends Application {
         this.startingAmount = new CalculatorField("Starting Amount:", "\\d{0,8}");
         this.contributionField = new CalculatorField("Contribution:", "\\d{0,6}");
 
-        this.contributionOption = new ComboBox<>();
-        contributionOption.getItems().addAll(
-                "Monthly",
-                "Yearly");
-        contributionOption.getSelectionModel().selectFirst();
+        this.contributionOption = new ContributionOption<>();
 
         this.rateOfReturn = new CalculatorField("Rate of Return:", "\\d{0,2}(\\.\\d{0,3})?");
         this.yearsToGrow = new CalculatorField("Years to Grow:", "\\d{0,2}");
@@ -62,7 +59,7 @@ public class InvestmentAssetCalculator extends Application {
                 calculateButton);
 
         inputFields.setAlignment(Pos.BOTTOM_CENTER);
-        inputFields.setSpacing(10);
+        inputFields.setSpacing(5);
         inputFields.setPadding(new Insets(0, 10, 0, 10));
         mainLayout.setTop(inputFields);
 
@@ -70,9 +67,9 @@ public class InvestmentAssetCalculator extends Application {
                     int ytg = (int) yearsToGrow.getTextToNum();
                     lineGraph.setXAxis(ytg);
                     lineGraph.getData().clear();
-                    lineGraph.addEndBalance(
-                            (int) startingAmount.getTextToNum(),
-                            (int) contributionField.getTextToNum(),
+                    lineGraph.addBalances(
+                            startingAmount.getTextToNum(),
+                            contributionField.getTextToNum(),
                             contributionOption.getValue(),
                             rateOfReturn.getTextToNum(),
                             ytg);
