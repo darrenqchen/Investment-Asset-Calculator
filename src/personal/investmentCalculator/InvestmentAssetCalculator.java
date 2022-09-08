@@ -1,10 +1,9 @@
 package personal.investmentCalculator;
 /*
 TODO:
-- Add a yearly option too
 - Make the graph show the x and y data point if you hover over the point
+- Add the different balances (end balance, invested balance, interest accrued)
 - Add a table
-- Switch to an OO design
  */
 
 
@@ -13,35 +12,51 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+/**
+ * Represents the InvestmentAssetCalculator application
+ */
 public class InvestmentAssetCalculator extends Application {
 
     private BorderPane mainLayout;
     private LineGraph lineGraph;
     private HBox inputFields;
     private CalculatorField startingAmount;
-    private CalculatorField monthlyContribution;
+    private CalculatorField contributionField;
+    private ComboBox<String> contributionOption;
     private CalculatorField rateOfReturn;
     private CalculatorField yearsToGrow;
     private Button calculateButton;
 
+    /**
+     * Initializes all the variables of the application
+     */
     public void init() {
         this.mainLayout = new BorderPane();
         this.lineGraph = new LineGraph();
         mainLayout.setCenter(lineGraph);
         this.inputFields = new HBox();
         this.startingAmount = new CalculatorField("Starting Amount:", "\\d{0,8}");
-        this.monthlyContribution = new CalculatorField("Monthly Contribution:", "\\d{0,6}");
+        this.contributionField = new CalculatorField("Contribution:", "\\d{0,6}");
+
+        this.contributionOption = new ComboBox<>();
+        contributionOption.getItems().addAll(
+                "Monthly",
+                "Yearly");
+        contributionOption.getSelectionModel().selectFirst();
+
         this.rateOfReturn = new CalculatorField("Rate of Return:", "\\d{0,2}(\\.\\d{0,3})?");
         this.yearsToGrow = new CalculatorField("Years to Grow:", "\\d{0,2}");
         this.calculateButton = new Button("Calculate");
 
         inputFields.getChildren().addAll(
                 startingAmount,
-                monthlyContribution,
+                contributionField,
+                contributionOption,
                 rateOfReturn,
                 yearsToGrow,
                 calculateButton);
@@ -57,7 +72,8 @@ public class InvestmentAssetCalculator extends Application {
                     lineGraph.getData().clear();
                     lineGraph.addEndBalance(
                             (int) startingAmount.getTextToNum(),
-                            (int) monthlyContribution.getTextToNum(),
+                            (int) contributionField.getTextToNum(),
+                            contributionOption.getValue(),
                             rateOfReturn.getTextToNum(),
                             ytg);
                 }
@@ -65,7 +81,7 @@ public class InvestmentAssetCalculator extends Application {
     }
 
     public static void main(String[] args) {
-        launch(OLDInvestmentAssetCalculator.class);
+        launch(InvestmentAssetCalculator.class);
     }
 
     @Override

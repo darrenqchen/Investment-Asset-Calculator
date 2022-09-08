@@ -20,11 +20,12 @@ public class LineGraph extends LineChart{
         this.xAxis = x;
         xAxis.setLabel("Year");
         xAxis.setMinorTickVisible(false);
+        xAxis.setTickUnit(1);
         this.yAxis = y;
         yAxis.setLabel("Dollars ($)");
         yAxis.setMinorTickVisible(false);
     }
-    
+
     /**
      * Creates LineGraph with the graph initialized.
      */
@@ -36,15 +37,19 @@ public class LineGraph extends LineChart{
         xAxis.setUpperBound(num);
     }
 
-    public void addEndBalance(int startingAmount, int monthlyContribution, double ror, int yearsToGrow) {
+    public void addEndBalance(int startingAmount, int contributionAmount, String contributionOption, double ror, int yearsToGrow) {
         double num = startingAmount;
         DecimalFormat df = new DecimalFormat("#.###");
         XYChart.Series data = new XYChart.Series();
         data.setName("Assets");
         data.getData().add(new XYChart.Data(0, startingAmount));
+        // if it's monthly change the contribution amount, if it's yearly, we skip
+        if (contributionOption.equals("Monthly")) {
+            contributionAmount = 12 * contributionAmount;
+        }
         for (int i = 1; i <= yearsToGrow; i += 1) {
             double rateOfReturn = (ror / 100) + 1;
-            String temp = df.format((num + 12 * monthlyContribution) * rateOfReturn);
+            String temp = df.format((num + contributionAmount) * rateOfReturn);
             double doubleTemp = Double.parseDouble(temp);
             data.getData().add(new XYChart.Data(i, doubleTemp));
             num = doubleTemp;
